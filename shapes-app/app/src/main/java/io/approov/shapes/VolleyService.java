@@ -24,7 +24,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 // *** UNCOMMENT THE LINE BELOW FOR APPROOV ***
-//import io.approov.framework.volley.ApproovService;
+//import io.approov.service.volley.ApproovService;
 
 public class VolleyService {
     private static Context appContext;
