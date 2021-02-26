@@ -28,7 +28,7 @@ The following dialog will popup when the build is complete:
 
 Click on `locate` to get the `app-debug.apk` location and a file explorer window will open. Now you need to open the terminal of your operating system on this location and execute:
 ```
-$ adb install app-debug.apk
+adb install app-debug.apk
 ```
 > **NOTE**:
 >   * The [`adb`](https://developer.android.com/studio/command-line/adb) tool needs to be installed in in your `$PATH`.
@@ -56,15 +56,29 @@ This contacts `https://shapes.approov.io/v2/shapes` to get the name of a random 
 
 ## ADD THE APPROOV DEPENDENCY
 
-The Approov integration is available via [`jitpack`](https://jitpack.io). This allows inclusion into the project by simply specifying a dependency in the `gradle` files for the app. Firstly, `jitpack` needs to be added as follows to the end the `repositories` section in the `build.gradle` file at the top level of the project:
+The Approov integration is available via [`jitpack`](https://jitpack.io). This allows inclusion into the project by simply specifying a dependency in the `gradle` files for the app. Firstly, `jitpack` needs to be added as follows to the end the `repositories` section in the `build.gradle:20` file at the top level of the project:
+
+```
+maven { url 'https://jitpack.io' }
+```
 
 ![Project Build Gradle](readme-images/root-gradle.png)
 
-The `approov-service-volley` dependency needs to be added as follows to the `build.gradle` at the app level:
+The `approov-service-volley` dependency needs to be added as follows to the `app/build.gradle:37` at the app level:
+
+```
+implementation 'com.github.approov:approov-service-volley:main-SNAPSHOT'
+```
 
 ![App Build Gradle](readme-images/app-gradle.png)
 
-Note that in this case the dependency has been added with the tag `main-SNAPSHOT`. This gets the latest version. However, for your projects we recommend you add a dependency to a specific version. You can see the latest in the `README` at [`approov-service-volley`](https://github.com/approov/approov-service-volley).
+Note that in this case the dependency has been added with the tag `main-SNAPSHOT`. This gets the latest version. However, for your projects we recommend you add a dependency to a specific version:
+
+```
+implementation 'com.github.approov:approov-service-volley:x.y.z'
+```
+
+You can see the latest in the `README` at [`approov-service-volley`](https://github.com/approov/approov-service-volley).
 
 Note that `approov-service-volley` is actually an open source wrapper layer that allows you to easily use Approov with `Volley`. This has a further dependency to the closed source Approov SDK itself.
 
@@ -72,7 +86,7 @@ Note that `approov-service-volley` is actually an open source wrapper layer that
 
 In order for Approov tokens to be generated for `https://shapes.approov.io/v2/shapes` it is necessary to inform Approov about it. If you are using a demo account this is unnecessary as it is already setup. For a trial account do:
 ```
-$ approov api -add shapes.approov.io
+approov api -add shapes.approov.io
 ```
 Tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account.
 
@@ -80,7 +94,7 @@ Tokens for this domain will be automatically signed with the specific secret for
 
 The Approov SDK needs a configuration string to identify the account associated with the app. Obtain it using:
 ```
-$ approov sdk -getConfig initial-config.txt
+approov sdk -getConfig initial-config.txt
 ```
 Copy and paste the `initial-config.txt` file content into a new created `approov_config` string resource entry as shown (the actual entry will be much longer than shown).
 
@@ -90,9 +104,11 @@ The app reads this string to initialize the Approov SDK.
 
 ## MODIFY THE APP TO USE APPROOV
 
-Uncomment the various lines needed to use Approov in `VolleyService`. There is also one line that needs to be commented out. You should have the following:
+Uncomment the various lines needed to use Approov in `io/approov/shapes/VolleyService.java`. There is also one line that needs to be commented out. You should have the following:
 
 ![Approov Volley Service](readme-images/approov-volley-service.png)
+
+> **NOTE:** Don't forget to comment out the previous line for the `requestQueue`.
 
 The `VolleyService` provides a singleton `RequestQueue` that is created on demand. This is a typical pattern for using `Volley`. The changes shown here cause the request queue to be constructed with a specialized `BaseHttpStack` that automatically adds Approov tokens to the requests and pins the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made.
 
@@ -110,14 +126,17 @@ The following dialog will popup when the build is complete:
 
 Click on `locate` to get the `app-debug.apk` location. Register the app with Approov:
 ```
-$ approov registration -add app-debug.apk
+approov registration -add app-debug.apk
 ```
+
+> **IMPORTANT:** The registration takes up to 30 seconds to propagate across the Approov Cloud Infrastructure, therefore don't try to run the app before this time as elapsed. During development of your app you can white-list your device to not have to register the APK each time you modify it.
+
 
 ## RUNNING THE SHAPES APP WITH APPROOV
 
 Install the `app-debug.apk` that you just registered on the device. You will need to remove the old app from the device first.
 ```
-$ adb install -r app-debug.apk
+adb install -r app-debug.apk
 ```
 Launch the app and press the `Get Shape` button. You should now see this (or another shape):
 
