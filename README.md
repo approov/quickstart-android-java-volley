@@ -100,6 +100,8 @@ The `VolleyService` provides a singleton `RequestQueue` that is created on deman
 
 The initialization is also extended to initialize the underlying `Approov` SDK with the configuration string added earlier.
 
+Run the app again to ensure that the `app-debug.apk` in the generated build outputs is up to date.
+
 ## REGISTER YOUR APP WITH APPROOV
 
 In order for Approov to recognize the app as being valid it needs to be registered with the service. Change directory to the top level of the `shapes-app` project and then register the app with Approov:
