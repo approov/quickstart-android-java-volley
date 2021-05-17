@@ -38,8 +38,7 @@ public class VolleyService {
         appContext = context;
 
         // *** UNCOMMENT THE LINE BELOW FOR APPROOV ***
-        //approovService = new ApproovService(appContext,
-        //            appContext.getResources().getString(R.string.approov_config));
+        //approovService = new ApproovService(appContext, "<enter-your-config-string-here>");
     }
 
     public static synchronized RequestQueue getRequestQueue() {

@@ -2,6 +2,10 @@
 
 This quickstart is written specifically for native Android apps that are written in Java and use [`Volley`](https://developer.android.com/training/volley) for making the API calls that you wish to protect with Approov. If this is not your situation then check if there is a more relevant Quickstart guide available.
 
+This quickstart provides a step-by-step example of integrating Approov into an app using a simple `Shapes` example that shows a geometric shape based on a request to an API backend that can be protected with Approov.
+
+It is also possible to use Approov in `Discovery` mode to perform an initial assessment of your app user base and whether there are requests being made to your backend API that are not coming from your mobile apps. This mode allows a simpler initial integration. If you wish to implement this first then follow the steps [here](https://github.com/approov/approov-service-volley) up to and including the `Discovery Mode` section.
+
 ## WHAT YOU WILL NEED
 * Access to a trial or paid Approov account
 * The `approov` command line tool [installed](https://approov.io/docs/latest/approov-installation/) with access to your account
@@ -66,6 +70,8 @@ implementation 'com.github.approov:approov-service-volley:x.y.z'
 
 You can see the latest in the `README` at [`approov-service-volley`](https://github.com/approov/approov-service-volley).
 
+Make sure you do a Gradle sync (by selecting `Sync Now` in the banner at the top of the modified `.gradle` file) after making these changes.
+
 Note that `approov-service-volley` is actually an open source wrapper layer that allows you to easily use Approov with `Volley`. This has a further dependency to the closed source Approov SDK itself.
 
 ## ENSURE THE SHAPES API IS ADDED
@@ -75,18 +81,6 @@ In order for Approov tokens to be generated for `https://shapes.approov.io/v2/sh
 approov api -add shapes.approov.io
 ```
 Tokens for this domain will be automatically signed with the specific secret for this domain, rather than the normal one for your account.
-
-## SETUP YOUR APPROOV CONFIGURATION
-
-The Approov SDK needs a configuration string to identify the account associated with the app. Obtain it using:
-```
-approov sdk -getConfig initial-config.txt
-```
-Copy and paste the `initial-config.txt` file content into a new created `approov_config` string resource entry as shown (the actual entry will be much longer than shown).
-
-![Initial Config String](readme-images/initial-config.png)
-
-The app reads this string to initialize the Approov SDK.
 
 ## MODIFY THE APP TO USE APPROOV
 
@@ -98,7 +92,12 @@ Uncomment the various lines needed to use Approov in `io/approov/shapes/VolleySe
 
 The `VolleyService` provides a singleton `RequestQueue` that is created on demand. This is a typical pattern for using `Volley`. The changes shown here cause the request queue to be constructed with a specialized `BaseHttpStack` that automatically adds Approov tokens to the requests and pins the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made.
 
-The initialization is also extended to initialize the underlying `Approov` SDK with the configuration string added earlier.
+The Approov SDK needs a configuration string to identify the account associated with the app. Obtain it using:
+
+```
+approov sdk -getConfigString
+```
+This will output a configuration string, something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`, that will identify your Approov account. Copy this into `io/approov/shapes/VolleyService.java:41`, replacing the text `<enter-your-config-string-here>`.
 
 Run the app again to ensure that the `app-debug.apk` in the generated build outputs is up to date.
 
