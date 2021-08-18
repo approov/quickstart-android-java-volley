@@ -6,7 +6,7 @@ This quickstart provides the basic steps for integrating Approov into your app. 
 
 To follow this guide you should have received an onboarding email for a trial or paid Approov account.
 
-## ADDING APPROOVSERVICE DEPENDENCY
+## ADDING APPROOV SERVICE DEPENDENCY
 The Approov integration is available via [`jitpack`](https://jitpack.io). This allows inclusion into the project by simply specifying a dependency in the `gradle` files for the app.
 
 Firstly, `jitpack` needs to be added to the end the `repositories` section in the `build.gradle` file at the top root level of the project:
@@ -43,7 +43,7 @@ Note that the minimum SDK version you can use with the Approov package is 21 (An
 
 Please [read this](https://approov.io/docs/latest/approov-usage-documentation/#targetting-android-11-and-above) section of the reference documentation if targetting Android 11 (API level 30) or above.
 
-## INITIALIZING APPROOVSERVICE
+## INITIALIZING APPROOV SERVICE
 In order to use the `ApproovService` you should create a `VolleyService` class:
 
 ```Java
