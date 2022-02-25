@@ -1,4 +1,3 @@
-// Application class for Approov Shapes App Demo (using Volley)
 //
 // MIT License
 //

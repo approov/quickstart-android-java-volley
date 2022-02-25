@@ -1,4 +1,3 @@
-// Main activity for Approov Shapes App Demo (using Volley)
 //
 // MIT License
 //
@@ -26,6 +25,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -34,13 +34,19 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
+// *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
+//import io.approov.service.volley.ApproovService;
+
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Activity activity;
     private View statusView = null;
     private ImageView statusImageView = null;
     private TextView statusTextView = null;
-    private Button connectivityCheckButton = null;
+    private Button helloCheckButton = null;
     private Button shapesCheckButton = null;
 
     private void sayHello() {
@@ -70,7 +76,7 @@ public class MainActivity extends Activity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                         Log.d(TAG, "Connectivity call failed");
+                         Log.d(TAG, "Hello call failed: " + error.toString());
                          final int imgId = R.drawable.confused;
                          final String msg = "Request failed: " + error.toString();
                          activity.runOnUiThread(new Runnable() {
@@ -127,7 +133,7 @@ public class MainActivity extends Activity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "Shapes call failed");
+                        Log.d(TAG, "Shapes call failed: " + error.toString());
                         final int imgId = R.drawable.confused;
                         final String msg = "Request failed: " + error.toString();
                         activity.runOnUiThread(new Runnable() {
@@ -139,7 +145,18 @@ public class MainActivity extends Activity {
                             }
                         });
                     }
-                });
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Api-Key", getResources().getString(R.string.shapes_api_key));
+
+                        // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECURE STRINGS ***
+                        //ApproovService.substituteHeader(headers, "Api-Key", null);
+
+                        return headers;
+                    }
+        };
         VolleyService.getRequestQueue().add(request);
     }
 
@@ -153,11 +170,11 @@ public class MainActivity extends Activity {
         statusView = findViewById(R.id.viewStatus);
         statusImageView = (ImageView) findViewById(R.id.imgStatus);
         statusTextView = findViewById(R.id.txtStatus);
-        connectivityCheckButton = findViewById(R.id.btnConnectionCheck);
+        helloCheckButton = findViewById(R.id.btnConnectionCheck);
         shapesCheckButton = findViewById(R.id.btnShapesCheck);
 
-        // handle connection check
-        connectivityCheckButton.setOnClickListener(new View.OnClickListener() {
+        // handle hello connection check
+        helloCheckButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // hide status

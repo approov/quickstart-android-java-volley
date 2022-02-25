@@ -1,4 +1,3 @@
-// Volley service class for Approov Shapes App Demo
 //
 // MIT License
 //
@@ -23,7 +22,7 @@ import android.content.Context;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-// *** UNCOMMENT THE LINE BELOW FOR APPROOV ***
+// *** UNCOMMENT THE LINES BELOW FOR APPROOV ***
 //import io.approov.service.volley.ApproovService;
 
 public class VolleyService {
