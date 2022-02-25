@@ -91,7 +91,7 @@ The quickstart also provides the following additional methods:
 In some cases the value to be substituted on a header may be prefixed by some fixed string. A common case is the presence of `Bearer` included in an authorization header to indicate the use of a bearer token. In this case you can specify a prefix as follows, assuming `headers` holds the current header map:
 
 ```
-ApproovService.substituteHeaders(headers, "Authorization", "Bearer ");
+ApproovService.substituteHeader(headers, "Authorization", "Bearer ");
 ```
 
 This causes the `Bearer` prefix to be stripped before doing the lookup for the substitution, and the `Bearer` prefix added to the actual secret value as part of the substitution.
