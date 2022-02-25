@@ -50,7 +50,7 @@ If the secret value is provided on the header `<secret-header>` then it is neces
 ApproovService.substituteHeader(headers, "<secret-header>", null);
 ```
 
-This will analyze and modify `headers` to replace the `<secret-placeholder>` with the `<secret-value>` as required when the app passes attestation. Since the mapping lookup is performed on the placeholder value you have the flexibiluty of providing different secrets on different API calls, even if they passed with the same header name.
+This will analyze and modify `headers` to replace the `<secret-placeholder>` with the `<secret-value>` as required when the app passes attestation. Since the mapping lookup is performed on the placeholder value you have the flexibility of providing different secrets on different API calls, even if they passed with the same header name.
 
 The `getHeaders()` method may throw `AuthFailureError`, from which `ApproovException` is derived. This means that an errors associated with the substitution will be passed to the overall request to be handled appropriately.
 
