@@ -1,7 +1,7 @@
 # Secret Protection
 You should use this option if you wish to protect access to 3rd party or managed APIs where you are not able to add an Approov token check to the backend. This allows client secrets, or API keys, used for access to be protected with Approov. Rather than build secrets into an app where they might be reverse engineered, they are only provided at runtime by Approov for apps that are pass Approov attestation. This substantially improves your protection and prevents these secrets being abused by attackers. Where you are able to modify the backend we recommend you use Token Protection for further enchanced flexibility and security.
 
-This quickstart provides straigtforward implementation if the secret is currently supplied in a request header to the API. The quickstart provides a method to rewrite headers to automatically substitute in the secret, but only if the app has passed the Approov attestation checks. If the app fails its checks then you can add a custom [rejection](#handling-rejections) handler.
+This quickstart provides straightforward implementation if the secret is currently supplied in a request header to the API. The quickstart provides a method to rewrite headers to automatically substitute in the secret, but only if the app has passed the Approov attestation checks. If the app fails its checks then you can add a custom [rejection](#handling-rejections) handler.
 
 These additional steps require access to the [Approov CLI](https://approov.io/docs/latest/approov-cli-tool-reference/), please follow the [Installation](https://approov.io/docs/latest/approov-installation/) instructions.
 
@@ -105,7 +105,7 @@ Use the the following method in `ApproovService`:
 public static String fetchSecureString(String key, String newDef) throws ApproovException
 ```
 
-to lookup a secure string with the given `key`, returning `null` if it is not defined. Note that you should never cache this value in your code. You may define a new value for the `key` by passing a new value in `newDef` rather than `null`.
+to lookup a secure string with the given `key`, returning `null` if it is not defined. Note that you should never cache this value in your code. Approov does the caching for you in a secure way. You may define a new value for the `key` by passing a new value in `newDef` rather than `null`. An empty `newDef` is used to delete the secure string.
 
 Note that this method may make networking calls so should never be called from the main UI thread. The call may also fail with an `ApproovException`. If this is of type `ApproovNetworkException` then a retry should be performed as the issue is temporary and network related. If `ApproovRejectionException` is thrown then the app has not passed Approov attestation and some user feedback should be provided.
 
