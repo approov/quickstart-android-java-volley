@@ -53,7 +53,7 @@ The `approov-service-volley` dependency needs to be added as follows to the `app
 Note that in this case the dependency has been added with the tag `main-SNAPSHOT`. However, for your projects we recommend you add a dependency to a specific version:
 
 ```
-implementation 'com.github.approov:approov-service-volley:3.0.1'
+implementation 'com.github.approov:approov-service-volley:3.0.2'
 ```
 
 Make sure you do a Gradle sync (by selecting `Sync Now` in the banner at the top of the modified `.gradle` file) after making these changes.
@@ -95,7 +95,7 @@ approov registration -add app/build/outputs/apk/debug/app-debug.apk
 ```
 Note, on Windows you need to substitute \ for / in the above command.
 
-> **IMPORTANT:** The registration takes up to 30 seconds to propagate across the Approov Cloud Infrastructure, therefore don't try to run the app again before this time as elapsed. During development of your app you can ensure your device [always passees](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) so you do not have to register the APK each time you modify it.
+> **IMPORTANT:** The registration takes up to 30 seconds to propagate across the Approov Cloud Infrastructure, therefore don't try to run the app again before this time has elapsed. During development of your app you can ensure your device [always passees](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) so you do not have to register the APK each time you modify it.
 
 ## RUNNING THE SHAPES APP WITH APPROOV
 
