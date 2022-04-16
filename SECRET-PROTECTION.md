@@ -56,11 +56,27 @@ If the secret value is provided on the header `<secret-header>` then it is neces
 ApproovService.substituteHeader(headers, "<secret-header>", null);
 ```
 
-This will analyze and modify `headers` to replace the `<secret-placeholder>` with the `<secret-value>` as required when the app passes attestation. Since the mapping lookup is performed on the placeholder value you have the flexibility of providing different secrets on different API calls, even if they passed with the same header name.
+This will analyze and modify `headers` to replace the `<secret-placeholder>` with the `<secret-value>` as required when the app passes attestation. Since the mapping lookup is performed on the placeholder value you have the flexibility of providing different secrets on different API calls, even if they passed with the same header name. Note that this should only ever be applied to a URL with a host domain that has been added to Approov, so that either pinning or managed trust roots protection is being applied.
 
 The `getHeaders()` method may throw `AuthFailureError`, from which `ApproovException` is derived. This means that an errors associated with the substitution will be passed to the overall request to be handled appropriately.
 
 Since earlier released versions of the app may have already leaked the `<secret-value>`, you may wish to refresh the secret at some later point when any older version of the app is no longer in use. You can of course do this update over-the-air using Approov without any need to modify the app.
+
+If the secret value is provided as a parameter in a URL query string then it is necessary to call a function that may update the parameters. In Volley parameters may be added by overriding the [`getParams()`](https://javadoc.io/doc/com.android.volley/volley/1.1.1/com/android/volley/Request.html#getParams--) method in the `Volley.Request`. This will create a `Map<String, String>` of the `params` that you should pass to this call, at the end of the function before returning the `params`:
+
+```Java
+ApproovService.substituteQueryParam(params, "<secret-param>");
+```
+
+This will analyze and modify `params` to replace the `<secret-placeholder>` with the `<secret-value>` as required when the app passes attestation. The `getParams()` method may throw `AuthFailureError`, from which `ApproovException` is derived. This means that an errors associated with the substitution will be passed to the overall request to be handled appropriately.
+
+Note that you cannot use `getParams` for `GET` requests. To support this an alternative method for query parameter substitution is provided, to allow the original URL String to be modified. For instance, if you wish to substitute the parameter `<secret-param>` then you must call:
+
+```Java
+url = approovService..substituteQueryParamInURLString(url, "<secret-param>");
+```
+
+If no substitution is made then the return value is the same as the input, otherwise a new URL is created with the substituted parameter value. The call should transform any instance of a URL such as `https://mydomain.com/endpoint?<secret-param>=<secret-placeholder>` into `https://mydomain.com/endpoint?<secret-param>=<secret-value>`, if the app passes attestation and there is a secure string with the name `<secret-placeholder>`. You will need to catch and deal with any `ApproovException` thrown by this call. Note that this should only ever be applied to a URL with a host domain that has been added to Approov, so that either pinning or managed trust roots protection is being applied.
 
 ## REGISTERING APPS
 In order for Approov to recognize the app as being valid it needs to be registered with the service. Change the directory to the top level of your app project and then register the app with Approov:
@@ -176,4 +192,4 @@ catch(ApproovException e) {
 // app has passed the precheck
 ```
 
-> Note you should NEVER use this as the only form of protection in your app, this is simply to provide an early indication of failure to your users as a convenience. You must always also have secrets essential to the operation of your app, or access to backend API services, protected with Approov. This is because, although the test itself is heavily secured, it may be possible for an attacker to bypass its result or prevent it being called at all. When the app is dependent on the secrets protected, it is not possible for them to be obtained at all without passing the attestation.
+> Note you should NEVER use this as the only form of protection in your app, this is simply to provide an early indication of failure to your users as a convenience. You must always also have secrets essential to the operation of your app, or access to backend API services, protected with Approov. This is because, although the Approov attestation itself is heavily secured, it may be possible for an attacker to bypass its result or prevent it being called at all. When the app is dependent on the secrets protected, it is not possible for them to be obtained at all without passing the attestation.
