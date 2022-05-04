@@ -151,7 +151,7 @@ public class MainActivity extends Activity {
                         Map<String, String> headers = new HashMap<>();
                         headers.put("Api-Key", getResources().getString(R.string.shapes_api_key));
 
-                        // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECURE STRINGS ***
+                        // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
                         //ApproovService.substituteHeader(headers, "Api-Key", null);
 
                         return headers;

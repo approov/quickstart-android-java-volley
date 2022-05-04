@@ -27,17 +27,13 @@ import com.android.volley.toolbox.Volley;
 
 public class VolleyService {
     private static Context appContext;
-
-    // *** UNCOMMENT THE LINE BELOW FOR APPROOV ***
-    //private static ApproovService approovService;
-
     private static RequestQueue requestQueue;
 
     public static synchronized void initialize(Context context) {
         appContext = context;
 
         // *** UNCOMMENT THE LINE BELOW FOR APPROOV ***
-        //approovService = new ApproovService(appContext, "<enter-your-config-string-here>");
+        //ApproovService.initialize(appContext, "<enter-your-config-string-here>");
     }
 
     public static synchronized RequestQueue getRequestQueue() {
@@ -46,7 +42,7 @@ public class VolleyService {
             requestQueue = Volley.newRequestQueue(appContext);
 
             // *** UNCOMMENT THE LINE BELOW FOR APPROOV ***
-            //requestQueue = Volley.newRequestQueue(appContext, approovService.getBaseHttpStack());
+            //requestQueue = Volley.newRequestQueue(appContext, ApproovService.getBaseHttpStack());
         }
         return requestQueue;
     }

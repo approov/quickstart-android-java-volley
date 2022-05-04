@@ -73,7 +73,7 @@ This will analyze and modify `params` to replace the `<secret-placeholder>` with
 Note that you cannot use `getParams` for `GET` requests. To support this an alternative method for query parameter substitution is provided, to allow the original URL String to be modified. For instance, if you wish to substitute the parameter `<secret-param>` then you must call:
 
 ```Java
-url = approovService..substituteQueryParamInURLString(url, "<secret-param>");
+url = approovService.substituteQueryParamInURLString(url, "<secret-param>");
 ```
 
 If no substitution is made then the return value is the same as the input, otherwise a new URL is created with the substituted parameter value. The call should transform any instance of a URL such as `https://mydomain.com/endpoint?<secret-param>=<secret-placeholder>` into `https://mydomain.com/endpoint?<secret-param>=<secret-value>`, if the app passes attestation and there is a secure string with the name `<secret-placeholder>`. You will need to catch and deal with any `ApproovException` thrown by this call. Note that this should only ever be applied to a URL with a host domain that has been added to Approov, so that either pinning or managed trust roots protection is being applied.
@@ -93,7 +93,7 @@ Note, on Windows you need to substitute \ for / in the above command.
 ## HANDLING REJECTIONS
 If the app is not recognized as being valid by Approov then an `ApproovRejectionException` is thrown on the request and the API call is not completed. The secret value will never be communicated to the app in this case.
 
-Your app should specifically catch this exception and provide some feedback to the user to explain why the app is not working. The `ApproovRejectionException` has a `geARC()` method which provides an [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#attestation-response-code) which can provide more information about the status of the device, without revealing any details to the end user.
+Your app should specifically catch this exception and provide some feedback to the user to explain why the app is not working. The `ApproovRejectionException` has a `getARC()` method which provides an [Attestation Response Code](https://approov.io/docs/latest/approov-usage-documentation/#attestation-response-code) which can provide more information about the status of the device, without revealing any details to the end user.
 
 If you wish to provide more direct feedback then enable the [Rejection Reasons](https://approov.io/docs/latest/approov-usage-documentation/#rejection-reasons) feature:
 
@@ -108,8 +108,6 @@ You will then be able to use `getRejectionReasons()` on an `ApproovRejectionExce
 ## FURTHER OPTIONS
 
 See [Getting Started With Approov](https://approov.io/docs/latest/approov-usage-documentation/#getting-started-with-approov) for information about additional Approov features you may wish to try.
-
-The quickstart also provides the following additional methods:
 
 ### Header Prefixes
 In some cases the value to be substituted on a header may be prefixed by some fixed string. A common case is the presence of `Bearer` included in an authorization header to indicate the use of a bearer token. In this case you can specify a prefix as follows, assuming `headers` holds the current header map:
@@ -138,7 +136,7 @@ String newDef;
 String secret;
 // define key and newDef here
 try {
-    secret = YourApp.approovService.fetchSecureString(key, newDef);
+    secret = ApproovService.fetchSecureString(key, newDef);
 }
 catch(ApproovRejectionException e) {
     // failure due to the attestation being rejected, e.getARC() and e.getRejectionReasons() may be used to present information to the user
@@ -161,7 +159,7 @@ This method is also useful for providing runtime secrets protection when the val
 If you wish to reduce the latency associated with substituting the first secret, then make this call immediately after creating `ApproovService`:
 
 ```Java
-YourApp.approovService.prefetch()
+ApproovService.prefetch();
 ```
 
 This initiates the process of fetching the required information as a background task, so that it is available immediately when subsequently needed. Note the information will automatically expire after approximately 5 minutes.
@@ -177,7 +175,7 @@ import io.approov.service.volley.ApproovRejectionException;
 ...
 
 try {
-    YourApp.approovService.precheck();
+    ApproovService.precheck();
 }
 catch(ApproovRejectionException e) {
     // failure due to the attestation being rejected, e.getARC() and e.getRejectionReasons() may be used to present information to the user
@@ -187,7 +185,7 @@ catch(ApproovNetworkException e) {
     // failure due to a potentially temporary networking issue, allow for a user initiated retry
 }
 catch(ApproovException e) {
-   // a more permanent error, see e.message
+   // a more permanent error, see e.getMessage()
 }
 // app has passed the precheck
 ```

@@ -53,7 +53,7 @@ The `approov-service-volley` dependency needs to be added as follows to the `app
 Note that in this case the dependency has been added with the tag `main-SNAPSHOT`. However, for your projects we recommend you add a dependency to a specific version:
 
 ```
-implementation 'com.github.approov:approov-service-volley:3.0.3'
+implementation 'com.github.approov:approov-service-volley:3.0.4'
 ```
 
 Make sure you do a Gradle sync (by selecting `Sync Now` in the banner at the top of the modified `.gradle` file) after making these changes.
@@ -78,7 +78,7 @@ Uncomment the various lines needed to use Approov in `io/approov/shapes/VolleySe
 
 The `VolleyService` provides a singleton `RequestQueue` that is created on demand. This is a typical pattern for using `Volley`. The changes shown here cause the request queue to be constructed with a specialized `BaseHttpStack` that automatically adds Approov tokens to the requests and pins the connections to ensure that no Man-in-the-Middle can eavesdrop on any communication being made.
 
-The Approov SDK needs a configuration string to identify the account associated with the app. It will have been provided in the Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). Copy this into `io/approov/shapes/VolleyService.java:41`, replacing the text `<enter-your-config-string-here>`.
+The Approov SDK needs a configuration string to identify the account associated with the app. It will have been provided in the Approov onboarding email (it will be something like `#123456#K/XPlLtfcwnWkzv99Wj5VmAxo4CrU267J1KlQyoz8Qo=`). Copy this into `io/approov/shapes/VolleyService.java`, replacing the text `<enter-your-config-string-here>`.
 
 You should also edit the `res/values/strings.xml` file to change to using the shapes `https://shapes.approov.io/v3/shapes/` endpoint that checks Approov tokens (as well as the API key built into the app):
 
@@ -114,14 +114,16 @@ This means that the app is getting a validly signed Approov token to present to 
 If you still don't get a valid shape then there are some things you can try. Remember this may be because the device you are using has some characteristics that cause rejection for the currently set [Security Policy](https://approov.io/docs/latest/approov-usage-documentation/#security-policies) on your account:
 
 * Ensure that the version of the app you are running is exactly the one you registered with Approov. Also, if you are running the app from a debugger then valid tokens are not issued.
-* Look at the [`logcat`](https://developer.android.com/studio/command-line/logcat) output from the device. Information about any Approov token fetched or an error is output at the `INFO` level, e.g. `2020-02-10 13:55:55.774 10442-10705/io.approov.shapes I/ApproovInterceptor: Approov Token for shapes.approov.io: {"did":"+uPpGUPeq8bOaPuh+apuGg==","exp":1581342999,"ip":"1.2.3.4","sip":"R-H_vE"}`. You can easily [check](https://approov.io/docs/latest/approov-usage-documentation/#loggable-tokens) the validity and find out any reason for a failure.
+* Look at the [`logcat`](https://developer.android.com/studio/command-line/logcat) output from the device. Information about any Approov token fetched or an error is output at the `DEBUG` level. You can easily [check](https://approov.io/docs/latest/approov-usage-documentation/#loggable-tokens) the validity and find out any reason for a failure.
 * Consider using an [Annotation Policy](https://approov.io/docs/latest/approov-usage-documentation/#annotation-policies) during initial development to directly see why the device is not being issued with a valid token.
 * Use `approov metrics` to see [Live Metrics](https://approov.io/docs/latest/approov-usage-documentation/#live-metrics) of the cause of failure.
 * You can use a debugger or emulator and get valid Approov tokens on a specific device by ensuring it [always passes](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy). As a shortcut, when you are first setting up, you can add a [device security policy](https://approov.io/docs/latest/approov-usage-documentation/#adding-a-device-security-policy) using the `latest` shortcut as discussed so that the `device ID` doesn't need to be extracted from the logs or an Approov token.
 
 ## SHAPES APP WITH SECRET PROTECTION
 
-This section provides an illustration of an alternative option for Approov protection if you are not able to modify the backend to add an Approov Token check. Firstly, revert any previous change to `res/values/strings.xml` to using `https://shapes.approov.io/v1/shapes/` that simply checks for an API key. The `shapes_api_key` should also be changed to `shapes_api_key_placeholder`, removing the actual API key out of the code:
+This section provides an illustration of an alternative option for Approov protection if you are not able to modify the backend to add an Approov Token check. 
+
+Firstly, revert any previous change to `res/values/strings.xml` to using `https://shapes.approov.io/v1/shapes/` that simply checks for an API key. The `shapes_api_key` should also be changed to `shapes_api_key_placeholder`, removing the actual API key out of the code:
 
 ![Shapes V1 Endpoint](readme-images/shapes-v1-endpoint.png)
 

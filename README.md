@@ -24,7 +24,7 @@ Secondly, add the dependency in your app's `build.gradle`:
 
 ```
 dependencies {
-	 implementation 'com.github.approov:approov-service-volley:3.0.3'
+	 implementation 'com.github.approov:approov-service-volley:3.0.4'
 }
 ```
 Make sure you do a Gradle sync (by selecting `Sync Now` in the banner at the top of the modified `.gradle` file) after making these changes.
@@ -41,7 +41,7 @@ The following app permissions need to be available in the manifest to use Approo
 
 Note that the minimum SDK version you can use with the Approov package is 21 (Android 5.0). 
 
-Please [read this](https://approov.io/docs/latest/approov-usage-documentation/#targetting-android-11-and-above) section of the reference documentation if targetting Android 11 (API level 30) or above.
+Please [read this](https://approov.io/docs/latest/approov-usage-documentation/#targeting-android-11-and-above) section of the reference documentation if targeting Android 11 (API level 30) or above.
 
 ## INITIALIZING APPROOV SERVICE
 In order to use the `ApproovService` you should create a `VolleyService` class:
@@ -51,17 +51,16 @@ import io.approov.service.volley.ApproovService;
 
 public class VolleyService {
     private static Context appContext;
-    private static ApproovService approovService;
     private static RequestQueue requestQueue;
 
     public static synchronized void initialize(Context context) {
         appContext = context;
-        approovService = new ApproovService(appContext, "<enter-your-config-string-here>")
+        ApproovService.initialize(appContext, "<enter-your-config-string-here>")
     }
 
     public static synchronized RequestQueue getRequestQueue() {
         if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(appContext, approovService.getBaseHttpStack());
+            requestQueue = Volley.newRequestQueue(appContext, ApproovService.getBaseHttpStack());
         }
         return requestQueue;
     }
@@ -74,8 +73,6 @@ You must initialize this when your app is created, usually in the `onCreate` met
 
 ```Java
 public class YourApp extends Application {
-    public static ApproovService approovService;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -109,3 +106,5 @@ To actually protect your APIs there are some further steps. Approov provides two
 * [SECRET PROTECTION](https://github.com/approov/quickstart-android-java-volley/blob/master/SECRET-PROTECTION.md): If you do not control the backend API(s) being protected, and are therefore unable to modify it to check Approov tokens, you can use this approach instead. It allows app secrets, and API keys, to be protected so that they no longer need to be included in the built code and are only made available to passing apps at runtime.
 
 Note that it is possible to use both approaches side-by-side in the same app, in case your app uses a mixture of 1st and 3rd party APIs.
+
+See [REFERENCE](https://github.com/approov/quickstart-android-java-volley/blob/master/REFERENCE.md) for a complete list of all of the `ApproovService` methods.
