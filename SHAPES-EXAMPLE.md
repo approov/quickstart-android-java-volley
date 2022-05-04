@@ -143,7 +143,7 @@ approov secstrings -addKey shapes_api_key_placeholder -predefinedValue yXClypapW
 
 > Note that this command also requires an [admin role](https://approov.io/docs/latest/approov-usage-documentation/#account-access-roles).
 
-Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `io/approov/shapes/MainActivity.java:155` and also uncomment the `ApproovService` import at the start of the file:
+Next we need to inform Approov that it needs to substitute the placeholder value for the real API key on the `Api-Key` header. You need to add the call at `io/approov/shapes/MainActivity.java` and also uncomment the `ApproovService` import at the start of the file:
 
 ![Approov Substitute Header](readme-images/approov-subs-header.png)
 

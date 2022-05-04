@@ -73,7 +73,7 @@ This will analyze and modify `params` to replace the `<secret-placeholder>` with
 Note that you cannot use `getParams` for `GET` requests. To support this an alternative method for query parameter substitution is provided, to allow the original URL String to be modified. For instance, if you wish to substitute the parameter `<secret-param>` then you must call:
 
 ```Java
-url = approovService.substituteQueryParamInURLString(url, "<secret-param>");
+url = ApproovService.substituteQueryParamInURLString(url, "<secret-param>");
 ```
 
 If no substitution is made then the return value is the same as the input, otherwise a new URL is created with the substituted parameter value. The call should transform any instance of a URL such as `https://mydomain.com/endpoint?<secret-param>=<secret-placeholder>` into `https://mydomain.com/endpoint?<secret-param>=<secret-value>`, if the app passes attestation and there is a secure string with the name `<secret-placeholder>`. You will need to catch and deal with any `ApproovException` thrown by this call. Note that this should only ever be applied to a URL with a host domain that has been added to Approov, so that either pinning or managed trust roots protection is being applied.
