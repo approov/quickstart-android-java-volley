@@ -37,7 +37,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-// *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
+// *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION ***
 //import io.approov.service.volley.ApproovService;
 
 public class MainActivity extends Activity {
@@ -151,7 +151,7 @@ public class MainActivity extends Activity {
                         Map<String, String> headers = new HashMap<>();
                         headers.put("Api-Key", getResources().getString(R.string.shapes_api_key));
 
-                        // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRET PROTECTION ***
+                        // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION ***
                         //ApproovService.substituteHeader(headers, "Api-Key", null);
 
                         return headers;
