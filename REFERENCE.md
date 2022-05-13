@@ -20,8 +20,9 @@ void initialize(Context context, String config)
 
 The [application context](https://developer.android.com/reference/android/content/Context#getApplicationContext()) must be provided using the `context` parameter.
 
-## GetBaseHttpStack
+It is possible to pass an empty `config` string to indicate that no underlying SDK initialization is required. Only do this if you are also using a different Approov quickstart in your app (which will use the same underlying Approov SDK) and this will have been initialized first.
 
+## GetBaseHttpStack
 Provides the Approov enabled BaseHttpStack to be used for volley. This adds Approov tokens and pinning. Returns `null` if Approov has not been initialized.
 
 ```Java

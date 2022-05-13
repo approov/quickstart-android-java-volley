@@ -91,8 +91,6 @@ This uses the `ApproovService` base `http` stack to include an interceptor to ad
 
 Approov errors will generate an `ApproovException`, which is a type of volley `AuthFailureError`. This may be further specialized into an `ApproovNetworkException`, indicating an issue with networking that should provide an option for a user initiated retry.
 
-It is possible to pass an empty string to `ApproovService` initialization to indicate that no underlying SDK initialization is required. Only do this if you are also using a different Approov quickstart in your app (which will use the same underlying Approov SDK) and this will have been initialized first.
-
 ## CHECKING IT WORKS
 Initially you won't have set which API domains to protect, so the interceptor will not add anything. It will have called Approov though and made contact with the Approov cloud service. You will see logging from Approov saying `UNKNOWN_URL`.
 
