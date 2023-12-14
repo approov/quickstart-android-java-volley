@@ -38,6 +38,13 @@ void setProceedOnNetworkFail(boolean proceed)
 
 Note that this should be used with *CAUTION* because it may allow a connection to be established before any dynamic pins have been received via Approov, thus potentially opening the channel to a MitM.
 
+### SetDevKey
+[Sets a development key](https://approov.io/docs/latest/approov-usage-documentation/#using-a-development-key) in order to force an app to be passed. This can be used if the app has to be resigned in a test environment and would thus fail attestation otherwise.
+
+```Java
+void setDevKey(String devKey)
+```
+
 ## SubstituteHeader
 Potentially substitutes a header value in the `headers` map supplied. This determines if the given `substitutionHeader` is present and, if so, looks at the present value and determines if it corresponds to a key of a secure string. If so then the header value is remapped to the secure string value. A `requiredPrefix` may be specified to deal with cases such as the use of "`Bearer `" prefixed before values in an authorization header. If the attestation fails for any reason then an `ApproovException` is thrown. Note that this function should only be called by a request `getHeaders` function that provides the ephemeral header values, as the output should not be cached. Note also that this method does not exclude substitutions made in any added excluded URLs.
 
