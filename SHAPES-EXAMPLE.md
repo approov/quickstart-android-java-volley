@@ -52,6 +52,7 @@ The `approov-service-volley` dependency needs to be added as follows to the `app
 
 Note that in this case the dependency has been added with the tag `main-SNAPSHOT`. However, for your projects we recommend you add a dependency to a specific version:
 
+
 ```
 implementation 'com.github.approov:approov-service-volley:3.2.1'
 ```
