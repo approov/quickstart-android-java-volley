@@ -22,9 +22,10 @@ allprojects {
 
 Secondly, add the dependency in your app's `build.gradle`:
 
+
 ```
 dependencies {
-	 implementation 'com.github.approov:approov-service-volley:3.2.0'
+	 implementation 'com.github.approov:approov-service-volley:3.2.1'
 }
 ```
 Make sure you do a Gradle sync (by selecting `Sync Now` in the banner at the top of the modified `.gradle` file) after making these changes.
