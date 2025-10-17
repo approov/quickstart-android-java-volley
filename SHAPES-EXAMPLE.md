@@ -47,7 +47,7 @@ The `approov-service-volley` dependency needs to be added as follows to the `app
 The `Maven` dependency reference is
 
 ```
-implementation("io.approov:service.volley:3.5.0")
+implementation("io.approov:service.volley:3.5.1")
 ```
 
 Make sure you do a Gradle sync (by selecting `Sync Now` in the banner at the top of the modified `.gradle` file) after making these changes.
