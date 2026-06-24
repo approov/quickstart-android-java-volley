@@ -152,7 +152,7 @@ public class MainActivity extends Activity {
                         headers.put("Api-Key", getResources().getString(R.string.shapes_api_key));
 
                         // *** UNCOMMENT THE LINE BELOW FOR APPROOV USING SECRETS PROTECTION ***
-                        //ApproovService.substituteHeader(headers, "Api-Key", null);
+                        //ApproovService.substituteHeader(getResources().getString(R.string.shapes_url), headers, "Api-Key", null);
 
                         return headers;
                     }

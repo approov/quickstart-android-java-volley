@@ -33,10 +33,10 @@ If the published code of your app currently uses `your-secret-value` then replac
 If the secret value needs to be provided on the header `your-header` then it is necessary to notify the `ApproovService` that the header is subject to substitution. You do this by making the call once, after initialization:
 
 ```Java
-ApproovService.substituteHeader(headers, "your-header", null);
+ApproovService.substituteHeader(url, headers, "your-header", null);
 ```
 
-This will analyze and modify `headers` to replace `your-secret-name` with `your-secret-value` as required when the app passes attestation. Since the mapping lookup is performed on the secret name you have the flexibility of providing different secrets on different API calls, even if they are passed with the same header name. Note that this should only ever be applied to a URL with a host domain that has been added to Approov, so that either pinning or managed trust roots protection is being applied.
+Here `url` is the URL of the request being made; substitution is only applied when the request's host domain has been added to Approov. This will analyze and modify `headers` to replace `your-secret-name` with `your-secret-value` as required when the app passes attestation. Since the mapping lookup is performed on the secret name you have the flexibility of providing different secrets on different API calls, even if they are passed with the same header name. Note that this should only ever be applied to a URL with a host domain that has been added to Approov, so that either pinning or managed trust roots protection is being applied.
 
 The `getHeaders()` method may throw `AuthFailureError`, from which `ApproovException` is derived. This means that an errors associated with the substitution will be passed to the overall request to be handled appropriately.
 
@@ -45,7 +45,7 @@ You can see a [worked example](https://github.com/approov/quickstart-android-jav
 If the secret value is provided as a parameter in a URL query string then it is necessary to call a function that may update the parameters. In Volley parameters may be added by overriding the [`getParams()`](https://javadoc.io/doc/com.android.volley/volley/1.1.1/com/android/volley/Request.html#getParams--) method in the `Volley.Request`. This will create a `Map<String, String>` of the `params` that you should pass to this call, at the end of the function before returning the `params`:
 
 ```Java
-ApproovService.substituteQueryParam(params, "your-param");
+ApproovService.substituteQueryParam(url, params, "your-param");
 ```
 
 This will analyze and modify `params` to replace the `your-secret-name` with `your-secret-value` as required when the app passes attestation. The `getParams()` method may throw `AuthFailureError`, from which `ApproovException` is derived. This means that an errors associated with the substitution will be passed to the overall request to be handled appropriately.
@@ -134,7 +134,7 @@ See [using a development key](https://approov.io/docs/latest/approov-usage-docum
 In some cases the value to be substituted on a header may be prefixed by some fixed string. A common case is the presence of `Bearer` included in an authorization header to indicate the use of a bearer token. In this case you can specify a prefix as follows, assuming `headers` holds the current header map:
 
 ```
-ApproovService.substituteHeader(headers, "Authorization", "Bearer ");
+ApproovService.substituteHeader(url, headers, "Authorization", "Bearer ");
 ```
 
 This causes the `Bearer` prefix to be stripped before doing the lookup for the substitution, and the `Bearer` prefix added to the actual secret value as part of the substitution.

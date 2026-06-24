@@ -49,14 +49,14 @@ void setDevKey(String devKey)
 Potentially substitutes a header value in the `headers` map supplied. This determines if the given `substitutionHeader` is present and, if so, looks at the present value and determines if it corresponds to a key of a secure string. If so then the header value is remapped to the secure string value. A `requiredPrefix` may be specified to deal with cases such as the use of "`Bearer `" prefixed before values in an authorization header. If the attestation fails for any reason then an `ApproovException` is thrown. Note that this function should only be called by a request `getHeaders` function that provides the ephemeral header values, as the output should not be cached. Note also that this method does not exclude substitutions made in any added excluded URLs.
 
 ```Java
-void substituteHeader(Map<String, String> headers, String substitutionHeader, String requiredPrefix) throws ApproovException
+void substituteHeader(String url, Map<String, String> headers, String substitutionHeader, String requiredPrefix) throws ApproovException
 ```
 
 ## SubstituteQueryParameter
 Potentially substitutes a parameter value in the `params` map supplied. This determines if the given substitution `queryParam` is present and, if so, looks at the present value and determines if it corresponds to a key of a secure string. If so then the parameter value is remapped to the secure string value. If the attestation fails for any reason then an `ApproovException` is thrown. Note that this function should only be called by a request `getParams` function that provides the ephemeral params values, as the output should not be cached. Note also that this method does not exclude substitutions made in any added excluded URLs.
 
 ```Java
-void substituteQueryParam(Map<String, String> params, String queryParam) throws ApproovException
+void substituteQueryParam(String url, Map<String, String> params, String queryParam) throws ApproovException
 ```
 
 ## SubstituteQueryParamInURLString
