@@ -50,7 +50,7 @@ The `Maven` dependency reference is
 implementation("io.approov:service.volley:3.5.3")
 ```
 
-Make sure you do a Gradle sync (by selecting `Sync Now` in the banner at the top of the modified `.gradle` file) after making these changes.
+Make sure you do a Gradle sync (by selecting `Sync Now` in the banner at the top of the app-level `build.gradle` file) after making these changes.
 
 Note that `approov-service-volley` is actually an open source wrapper layer that allows you to easily use Approov with `Volley`. This has a further dependency to the closed source Approov SDK itself.
 
